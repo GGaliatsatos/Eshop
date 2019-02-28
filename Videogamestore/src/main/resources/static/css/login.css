@@ -1,0 +1,9 @@
+.modal-header {
+    background-color: rgb(125, 180, 43);
+}
+
+.modal-description {
+    color: white;
+    font-family: "Anton", sans-serif;
+    text-align: center;
+}

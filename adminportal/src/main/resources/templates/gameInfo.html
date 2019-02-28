@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/header :: common-header" />
+
+<body>
+	<div th:replace="common/header :: navbar" />
+
+	<div class="container">
+
+
+		<div class="row" style="margin-top: 30px;">
+			<!-- main body goes here -->
+
+
+			<input hidden="hidden" th:field="*{game.id}" />
+
+			<ol>
+				<li><a th:href="@{/game/gameList}"><span
+						th:text="'Back to GameList'"></span></a></li>
+				<li><a th:href="@{/game/updateGame?id=}+${game.id}"><span
+						th:text="'Update Game'"></span></a></li>
+			</ol>
+			<!-- Game Image -->
+
+			<div class="row">
+				<div
+					class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-0 col-md-5 col-md-offset-1">
+
+					<img class="img-responsive game-cover"
+						style="width: 280px; height: 330px; margin: 0 auto;"
+						th:src="@{/image/game/}+${game.id}+'.jpg'" />
+				</div>
+
+
+				<!-- Game General Details -->
+				<div
+					class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-0 col-md-5 col-md-offset-1">
+					<h3>
+						<span th:if="${addGameSuccess}" style="color: forestgreen"><i
+							class="text-success" aria-hidden="true"></i>Added to cart.</span>
+					</h3>
+					<h3>
+						<span th:if="${notEnoughStock}" style="color: red">Oops,
+							only <span th:text="${game.inStockNumber}"></span> In Stock.
+						</span>
+					</h3>
+					<h3 th:text="${game.title}">Game Title</h3>
+
+					<div class="row">
+						<div class="col-xs-12 col-xs-offset-0">
+							<h5>
+								<strong>Company: </strong><span th:text="${game.company}"></span>
+							</h5>
+							<p>
+								<strong>Publisher: </strong><span th:text="${game.publisher}"></span>
+							</p>
+							<p>
+								<strong>Release Date: </strong><span
+									th:text="${game.releaseDate}"></span>
+							</p>
+
+							<p>
+								<strong>Supported Languages: </strong>
+							</p>
+							<ul th:each="language: ${game.languageList}">
+								<li th:text="${language.name}"></li>
+							</ul>
+							<p>
+								<strong>Genre: </strong><span th:text="${game.genre}"></span>
+							</p>
+
+							<p>
+								<strong>PEGI: </strong><a href="https://pegi.info/"> <img
+									class="img-responsive game-cover"
+									style="max-width: 50px; max-height: 50px;"
+									th:src="@{/image/PEGI/}+${game.pegiRating}+'.png'" />
+								</a>
+							</p>
+							<div class="col-xs-6 col-md-3">
+							<hr/>
+							<p>
+								<strong>Active: </strong><span th:text="${game.active}"></span>
+							</p>
+							<p>
+								<strong>On Sale: </strong><span th:text="${game.onSale}"></span>
+							</p>
+							<hr/>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div class="row" style="margin-top: 40px;">
+
+				<hr />
+
+				<!-- Game Description -->
+				<div class="col-xs-10 col-xs-offset-1 col-md-4 col-md-offset-2">
+					<h4>DESCRIPTION</h4>
+					<p th:utext="${game.description}"></p>
+				</div>
+
+			</div>
+
+			<div class="row" style="margin-top: 40px;">
+
+				<hr />
+
+				<!-- Game system Requirements -->
+				<div class="col-xs-10 col-xs-offset-1 col-md-4 col-md-offset-2">
+				<h4>System Requirements:</h4>
+					<p>
+						<strong>Game Size: </strong><span th:text="${game.size+ ' GB'}"></span>
+					</p>
+					<p>
+						<strong>Memory: </strong><span th:text="${game.memory+ ' GB RAM'}"></span>
+					</p>
+					<p>
+						<strong>Graphics Card: </strong><span th:text="${'Nvidia or ATI with '+game.graphicsMemory+ ' GB Memory Size or more'}"></span>
+					</p>
+					<p>
+						<strong>Processor Speed: </strong><span th:if="${!game.processorType}">x86 </span>
+						<span th:text="${'Intel or AMD with '+game.processorSpeed+ ' GHz clock rate or more.'}"></span>
+					</p>
+					<p>
+						<strong>Operating Systems: </strong>
+						<span th:if="${game.winOS != 'None'}" 
+						th:text="${'Windows('+ game.winOS}+')'"></span>
+						<span th:if="${game.macOS != 'None' and game.winOS != 'None'}" 
+						th:text="${', Mac OS X('+game.macOS}+')'"></span>						
+						<span th:if="${game.macOS != 'None' and game.winOS == 'None'}" 
+						th:text="${'Mac OS X('+game.macOS}+')'"></span>
+						<span th:if="${game.linOS != 'None' and (game.winOS != 'None' or game.macOS != 'None')}" 
+						th:text="${', Linux('+game.linOS}+')'"></span>
+						<span th:if="${game.linOS != 'None' and !(game.winOS != 'None' or game.macOS != 'None')}" 
+						th:text="${'Linux('+game.linOS}+')'"></span>						
+					</p>
+					
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+	<div th:replace="common/header :: body-bottom-scripts" />
+</body>
+</html>

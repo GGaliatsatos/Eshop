@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="common/shared :: common-header" />
+<body>
+	<header th:replace="common/shared :: navbar "> </header>
+
+	<main>
+
+	<div class="container box">
+
+		<div class="row" style="margin-bottom: -100px;">
+			<div class="col-xs-8">
+				<h2>
+					<span>User Account</span>
+				</h2>
+			</div>
+		</div>
+		<hr	style="position: absolute; width: 100%; height: 6px; background-color: #333; z-index: -1; margin-top: -80px;" />
+
+		<div class="row" style="margin-top: 10px;">
+			<div class="col-xs-12">
+				<div class="alert alert-success">
+					<h3>
+						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>  Thank you, your order has been
+						placed.
+					</h3>
+				</div>
+
+				<h3>List of Items</h3>
+				<div class="row" th:each="cartItem : ${cartItemList}">
+					<hr />
+					<div class="col-xs-2"></div>
+					<div class="col-xs-2">
+						<a th:href="@{/game(id=${cartItem.game.id})}"> <img
+							class="img-responsive"
+							th:src="#{adminPath}+@{/image/game/}+${cartItem.game.id}+'.jpg'"
+							style="width: 70px;" />
+						</a>
+					</div>
+					<div class="col-xs-6">
+						<div style="margin-left: 50px;">
+							<a th:href="@{/game?id=}+${cartItem.game.id}"><h4
+									th:text="${cartItem.game.title}"></h4></a>
+						</div>
+					</div>
+
+					<div class="col-xs-2">
+						<h5 style="color: #db3208; font-size: large;">
+							$<span th:text="${cartItem.subtotal}"
+								th:style="${cartItem.game.inStockNumber}==0? 'text-decoration: line-through' : ''"></span>
+						</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<!-- /container --> </main>
+
+	<footer th:replace="common/shared :: footer"></footer>
+
+
+	<div th:replace="common/shared :: bottom-scripts"></div>
+
+
+</body>
+
+</html>

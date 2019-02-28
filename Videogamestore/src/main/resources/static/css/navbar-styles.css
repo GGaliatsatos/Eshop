@@ -1,0 +1,127 @@
+/* navbar override style properties*/
+/* =============================== */
+.navbar-default {
+  background-color: rgb(11, 32, 56);
+  border: none;  
+  color: #e7e7e7;
+}
+
+.navbar-default .navbar-brand {
+  color: #b6b6b6;
+}
+
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+  color: #e7e7e7;
+}
+
+.navbar-nav.nav li a {
+    color: #b6b6b6;
+}
+
+.navbar-nav.nav li a:hover{
+    color: #e7e7e7; 
+}
+
+.navbar-nav.nav li a:focus {
+    outline: 0;
+    color: #b6b6b6;
+}
+
+.navbar-toggle.collapsed {
+    background-color: #e7e7e7;
+}
+
+.navbar-toggle.collapsed:hover, 
+.navbar-toggle.collapsed:focus {
+    background-color: #e7e7e7;
+    outline: 0;
+}
+/* ============================ */
+
+
+/* Modal styles */
+/* ============ */
+.modal-header {
+    background-color: rgb(125, 180, 43);
+}
+
+.modal-description {
+    color: white;
+    font-family: "Anton", sans-serif;
+    text-align: center;
+}
+/* ======================================== */
+
+/* nav-pills styles */
+/*==================*/
+
+#form-tabs .tab-content {
+  color : black;
+  background-color: #f4f4f4;
+  padding : 15px 25px;
+}
+
+#form-tabs .nav-pills {
+	background-color: #f4f4f4;
+}
+
+#form-tabs .active a,
+#form-tabs .active a:hover {
+    background-color: rgb(125, 180, 43);
+}
+
+#form-tabs .nav-pills > li > a {
+  border-radius: 0;
+  flex: 1;
+}
+
+#form-tabs .nav-pills > li > a:hover {
+  color: rgb(103,126,116);
+}
+
+
+/* nav-tabs styles */
+/*==================*/
+
+#user-tabs .tab-content {
+  color : black;
+  background-color: #f4f4f4;
+  
+}
+
+#user-tabs .nav-tabs {
+	background-color: #f4f4f4;
+}
+
+#user-tabs .nav-tabs ul>li.active>a,
+#user-tabs .nav-tabs ul>li.active>a:hover {
+    background-color: #869292;
+    color: white;
+}
+
+#user-tabs .nav-tabs > li > a {
+  flex: 1;
+  margin:0;
+}
+
+#user-tabs .nav-justified > li {
+	display: table-cell;
+    width: 1%;
+}
+
+#user-tabs .nav-justified > li > a {
+    margin-bottom: 0;
+    height: 40px;
+    font-size:11px;
+}
+
+.nav-justified > li {
+  display: table-cell;
+  width: 1%;
+}
+
+.nav-justified > li > a {
+  margin-bottom: 0;
+  height: 60px;
+}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="common/shared :: common-header"/>
+<body>
+	<header th:replace="common/shared :: navbar ">
+	</header>
+		
+	<main>
+
+	<div class="container box">
+	
+		<div class="row" style="margin-top: 10px;">
+			<div class="col-xs-12">
+				<div class="row">
+					<div class="col-xs-6 text-left">
+						<a class="btn btn-warning" th:href="@{/store}">Continue
+							Shopping</a>
+					</div>
+					<div class="col-xs-6 text-right">
+						<a class="btn btn-primary"
+							th:href="@{/checkout(id=${shoppingCart.id})}">Check Out</a>
+					</div>
+					<br />
+
+					<div th:if="${emptyCart}" class="alert alert-warning">Oops,
+						your cart is empty. See if you can find what you like to purchase 
+						and add them to cart.</div>
+
+					<br /> <br />
+					<div class="row">
+						<div class="col-xs-8 ">
+							<h4 style="margin-left:70px;">Products</h4>
+						</div>
+						<div class="col-xs-2">
+							<h4>Price</h4>
+						</div>
+						<div class="col-xs-2">
+							<h4>Qty</h4>
+						</div>
+					</div>
+
+					<!--**************** display products in cart ****************-->
+
+					<div class="row" th:each="cartItem : ${cartItemList}">
+						<form th:action="@{/shoppingCart/updateCartItem}" method="post">
+							<hr />
+							<div class="col-xs-2">
+								<a th:href="@{/game(id=${cartItem.game.id})}"> <img
+									style="width:70px;"
+									class="img-responsive shelf-game center-block"
+									th:src="#{adminPath}+@{/image/game/}+
+								${cartItem.game.id}+'.jpg'" />
+								</a>
+							</div>
+							<div class="col-xs-6">
+								<div style="margin-left:50px;">
+								<a th:href="@{/game?id=}+${cartItem.game.id}"><h4 th:text="${cartItem.game.title}"></h4></a>
+								<p th:if="${cartItem.game.inStockNumber&gt;10}"
+									style="color: green;">In Stock</p>
+								<p
+									th:if="${cartItem.game.inStockNumber&lt;10 and cartItem.game.inStockNumber&gt;0}"
+									style="color: green;">
+									Only <span th:text="${cartItem.game.inStockNumber}"></span> In
+									Stock
+								</p>
+								<p th:if="${cartItem.game.inStockNumber==0}"
+									style="color: darkred;">Product Unavailable</p>
+								<a th:href="@{/shoppingCart/removeItem?id=}+${cartItem.id}">remove from cart</a>
+								</div>
+							</div>
+
+							<div class="col-xs-2">
+								<h5 style="color: #db3208; font-size: large;">
+									$<span th:text="${cartItem.subtotal}"
+										th:style="${cartItem.game.inStockNumber}==0? 'text-decoration: line-through' : ''"></span>
+								</h5>
+							</div>
+
+							<div class="col-xs-2">
+								<input hidden="hidden" name="id" th:value="${cartItem.id}" /> <p
+									th:id="${cartItem.id}" th:name="qty" th:disabled="${cartItem.game.inStockNumber==0}" th:text="${cartItem.qty}" th:value="${cartItem.qty}"></p>
+								<!-- <button style="display: none;"
+									th:id="'update-item-'+${cartItem.id}" type="submit"
+									class="btn btn-warning btn-xs">Update</button>-->
+							</div>
+						</form>
+					</div>
+
+					<div class="row">
+						<hr />
+						<h4 class="col-xs-12 text-right">
+							<strong style="font-size: large;">Total Price (<span
+								th:text="${#lists.size(cartItemList)}"></span> items):
+							</strong> <span style="color: #db3208; font-szie: large;">$<span
+								th:text="${shoppingCart.grandTotal}"></span></span>
+						</h4>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+	<!-- /container --> 
+	
+	</main>
+
+	<footer th:replace="common/shared :: footer"></footer>
+
+
+	<div th:replace="common/shared :: bottom-scripts"></div>
+
+
+</body>
+
+</html>

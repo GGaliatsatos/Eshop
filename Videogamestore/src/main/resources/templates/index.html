@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="common/shared :: common-header"/>
+<body>
+	<header th:replace="common/shared :: navbar ">
+	</header>
+		
+	<main>
+
+	<div class="container box">
+	
+	
+	<!-- Featured section -->
+	<!-- ================ -->
+		<div class="row">
+		<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-xs-12">
+		<h2 class="section-title">BEST SELLERS</h2>
+		<hr/>
+		
+		<th:block th:each="game : ${gameListFeatured}">
+		
+			<div class="col-sm-3 col-sm-offset-0 col-xs-8 col-xs-offset-2" th:if="${game != null}">
+				<div class="card" style="position:relative;">
+					<a th:href="@{'/game?id=' + ${game.id}}"><img class="card-img-top" th:src="#{adminPath}+@{/image/game/}+${game.id}+'.jpg'" alt="Card image cap"/></a>
+							<div
+								style="position: absolute; top: 0; right: 0; border-radius: 0; opacity: 0.9; background-color: gray; width: 100%;"
+								class="text-center">
+								<strong class="text-dark" th:text="'$ '+${game.discountPrice}"></strong>
+								<del style="color: red;">
+									<small th:if="${game.discountPrice != game.listPrice}"
+										th:text="'$ '+${game.listPrice}"></small>
+								</del>
+							</div>
+
+							<div class="card-body text-center">
+						<strong th:text="${game.title}">Game Title</strong>
+					</div>
+				</div>
+			</div>
+		</th:block>	
+		</div>
+		</div>
+	<!-- Special offers section -->
+	<!-- ================ -->
+		<div class="row">
+		<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-xs-12">
+		<h2 class="section-title">SPECIAL OFFERS</h2>
+		<hr/>
+		
+		<th:block th:each="game : ${gameListOffers}">
+			<div class="col-sm-3 col-sm-offset-0 col-xs-8 col-xs-offset-2" th:if="${game != null}">
+				<div class="card" style="position:relative;">
+					<a th:href="@{'/game?id=' + ${game.id}}"><img class="card-img-top" th:src="#{adminPath}+@{/image/game/}+${game.id}+'.jpg'" alt="Card image cap"/></a>
+							<div
+								style="position: absolute; top: 0; right: 0; border-radius: 0; opacity: 0.9; background-color: gray; width: 100%;"
+								class="text-center">
+								<strong class="text-dark" th:text="'$ '+${game.discountPrice}"></strong>
+								<del style="color: red;">
+									<small th:if="${game.discountPrice != game.listPrice}"
+										th:text="'$ '+${game.listPrice}"></small>
+								</del>
+							</div>
+
+					
+					<div class="card-body text-center">
+						<strong th:text="${game.title}">Game Title</strong>
+					</div>
+				</div>
+			</div>		
+		</th:block>	
+		
+		</div>
+		</div>
+
+		<!-- main body goes here -->
+		
+
+	</div>
+	<!-- /container --> 
+	
+	</main>
+
+	<footer th:replace="common/shared :: footer"></footer>
+
+
+	<div th:replace="common/shared :: bottom-scripts"></div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="common/shared :: common-header" />
+<body>
+	<header th:replace="common/shared :: navbar "> </header>
+
+	<main>
+
+	<div class="container box">
+		<div class="row" style="margin-top: 30px;">
+			<!-- main body goes here -->
+
+			<form th:action="@{/shoppingCart/addItem}" method="post">
+				<input hidden="hidden" th:field="*{game.id}" />
+				
+				<!-- Game Image -->
+
+				<div class="row">
+					<div
+						class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-0 col-md-5 col-md-offset-1">
+
+						<img class="img-responsive game-cover"
+							style="width: 280px; height: 330px; margin: 0 auto;"
+							th:src="#{adminPath}+@{/image/game/}+${game.id}+'.jpg'" />
+					</div>
+
+
+					<!-- Game General Details -->
+					<div
+						class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-0 col-md-5 col-md-offset-1">
+						<h3>
+							<span th:if="${addGameSuccess}" style="color: forestgreen"><i
+								class="text-success" aria-hidden="true"></i>Added to cart.</span>
+						</h3>
+						<h3>
+							<span th:if="${notEnoughStock}" style="color: red">Oops,
+								only <span th:text="${game.inStockNumber}"></span> In Stock.
+							</span>
+							<span th:if="${alreadyPurchased}" style="color: red">
+								You already own this game. You can't purchase it again. 
+							</span>
+						</h3>
+						<h3 th:text="${game.title}">Game Title</h3>
+
+						<div class="row">
+							<div class="col-xs-12 col-xs-offset-0">
+								<h5>
+									<strong>Company: </strong><span th:text="${game.company}"></span>
+								</h5>
+								<p>
+									<strong>Publisher: </strong><span th:text="${game.publisher}"></span>
+								</p>
+								<p>
+									<strong>Release Date: </strong><span
+										th:text="${game.releaseDate}"></span>
+								</p>
+
+								<p>
+									<strong>Supported Languages: </strong>
+								</p>
+								<ul th:each="language: ${game.languageList}">
+									<li th:text="${language.name}"></li>
+								</ul>
+								<p>
+									<strong>Genre: </strong><span th:utext="${#strings.replace(game.genre,'_','-')}"></span>
+								</p>
+
+								<p>
+									<strong>PEGI: </strong><a href="https://pegi.info/"> <img
+										class="img-responsive game-cover"
+										style="max-width: 50px; max-height: 50px;"
+										th:src="#{adminPath}+@{/image/PEGI/}+${game.pegiRating}+'.png'" />
+									</a>
+								</p>
+
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<div class="row" style="margin-top: 40px;">
+
+					<hr />
+
+					<!-- Game Description -->
+					<div class="col-xs-10 col-xs-offset-1 col-md-4 col-md-offset-2">
+						<h4>DESCRIPTION</h4>
+						<p th:utext="${game.description}"></p>
+					</div>
+
+					<!-- Add to cart Interface -->
+
+					<div
+						class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-2">
+						<div class="panel panel-default"
+							style="border: 1px solid black; margin-top: 20px; background-image: linear-gradient(to top, #8e9eab, #eef2f3);">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-xs-12">
+										<h4>
+											Current Price: <span style="color: #db3208;">$<span
+												th:text="${game.discountPrice}"></span></span>
+										</h4>
+										<p th:if="*{game.discountPrice &lt; game.listPrice}">
+											List Price: <span style="text-decoration: line-through">$<span
+												th:text="${game.listPrice}"></span></span>
+										</p>
+										<p th:if="*{game.discountPrice &lt; game.listPrice}">
+											You save: $<span
+												th:text="${#numbers.formatDecimal((game.listPrice - game.discountPrice), 0, 'COMMA', 2, 'POINT' )}"></span>
+										</p>
+										<span>Qty: 1</span> 
+
+										<!--  <select name="qty">
+											<option th:each="qty : ${qtyList}" th:value="${qty}"
+												th:text="${qty}">
+    										</option>
+										</select>-->
+									</div>
+									<div class="col-xs-12" sec:authorize="isAuthenticated()">
+										<h4 th:if="${#lists.contains(game.ownerList,user)}" style="color: green">Already Purchased</h4>
+									</div>
+									<div class="col-xs-12">
+										<h4 th:if="*{game.inStockNumber&gt;10}" style="color: green">In
+											Stock</h4>
+										<h4
+											th:if="*{game.inStockNumber&lt;10 and game.inStockNumber&gt;0}"
+											style="color: green">
+											Only <span th:text="${game.inStockNumber}"> </span> In Stock
+										</h4>
+										<h4 th:if="*{game.inStockNumber==0}" style="color: darkred;">Unavailable</h4>
+										<div sec:authorize="isAuthenticated()">										
+											<button type="submit" class="btn btn-warning" th:if="${!#lists.contains(game.ownerList,user)}"
+											style="color: black; border: 1px solid black; padding: 10px 40px 10px 40px;">Add
+											to Cart</button>
+										</div>
+										<div sec:authorize="isAnonymous()">
+											<button type="submit" class="btn btn-warning" 
+											style="color: black; border: 1px solid black; padding: 10px 40px 10px 40px;">Add
+											to Cart</button>
+										</div>
+										<div class="col-xs-12" sec:authorize="isAuthenticated()">
+											<h6 th:if="${#lists.contains(game.ownerList,user)}" class="text-info">To download already purchased games, please download our client by pressing <a href="#"> here </a>. </h6>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+														<hr/>
+											<h4>System Requirements:</h4>
+					<p>
+						<strong>Game Size: </strong><span th:text="${game.size + ' GB'}"></span>
+					</p>
+					<p>
+						<strong>Memory: </strong><span th:text="${game.memory + ' GB RAM'}"></span>
+					</p>
+					<p>
+						<strong>Graphics Card: </strong><span th:text="${'Nvidia or ATI Model with '+ game.graphicsMemory + ' GB Memory Size or more'}"></span>
+					</p>
+					<p>
+						<strong>Processor Speed: </strong><span th:if="${!game.processorType}">x86 </span>
+						<span th:text="${'Intel or AMD with '+game.processorSpeed+ ' GHz clock rate or more.'}"></span>
+					</p>
+					<p>
+						<strong>Operating Systems: </strong>
+						<span th:if="${game.winOS != 'None'}" th:text="${'Windows('+game.winOS+')'}"></span>
+						<span th:if="${game.macOS != 'None' and game.winOS != 'None'}" 
+						th:text="${', Mac OS X('+game.macOS}+')'"></span>						
+						<span th:if="${game.macOS != 'None' and game.winOS == 'None'}" 
+						th:text="${'Mac OS X('+game.macOS}+')'"></span>
+						<span th:if="${game.linOS != 'None' and (game.winOS != 'None' or game.macOS != 'None')}" 
+						th:text="${', Linux('+game.linOS}+')'"></span>
+						<span th:if="${game.linOS != 'None' and !(game.winOS != 'None' or game.macOS != 'None')}" 
+						th:text="${'Linux('+game.linOS}+')'"></span>						
+					</p>
+					<hr/>
+						
+					</div>
+
+				</div>
+
+				<hr />
+			</form>
+		</div>
+	</div>
+	<!-- /container --> </main>
+
+	<footer th:replace="common/shared :: footer"></footer>
+
+
+	<div th:replace="common/shared :: bottom-scripts"></div>
+
+
+</body>
+
+</html>

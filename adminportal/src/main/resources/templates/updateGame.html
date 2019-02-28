@@ -1,0 +1,325 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/header :: common-header" />
+
+<body>
+	<div th:replace="common/header :: navbar" />
+
+	<div class="container">
+		<div class="row">
+			<form class="form-horizontal" th:action="@{/game/updateGame}" method="post"
+				enctype="multipart/form-data">
+				<fieldset>
+					<legend class="center-block">
+						Update Game Information<span style="font-size: small"> * is a
+							required field</span>
+					</legend>
+					<input hidden="hidden" name="id" th:value="${game.id}"/>
+
+					<!-- title -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="title">* Title</label>
+
+						<div class="col-md-8">
+							<input type="text" name="title" class="form-control" id="title"
+								th:value="${game.title}" required="required" placeholder="Title" />
+							<span class="help-block">Title of the Game</span>
+						</div>
+					</div>
+
+					<!-- company -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="company">
+							*Company</label>
+						<div class="col-md-8">
+							<input type="text" name="company" class="form-control" id="company"
+								th:value="${game.company}" required="required"
+								placeholder="Company" /> <span class="help-block">Development Company
+								</span>
+						</div>
+					</div>
+
+					<!-- publisher -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="publisher">*Publisher</label>
+						<div class="col-md-8">
+							<input type="text" name="publisher" class="form-control"
+								id="publisher" th:value="${game.publisher}"
+								placeholder="Publisher" /> <span class="help-block">Publisher
+								of the Game</span>
+						</div>
+					</div>
+
+					
+					<!-- genre -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="genre">Genre</label>
+						<div class="col-md-8">
+							<select th:value="${game.genre}" id="genre" name="genre"
+								class="form-control">
+								<option disabled="disabled">-- Please
+									select an option... --</option>
+								<option
+									th:each="genre : ${T(com.adminportal.domain.enumeration.Genre).values()}"
+									th:value="${genre}" 
+									th:text="${genre}"
+									th:selected="${#strings.equalsIgnoreCase(genre, game.genre)}">
+    								</option>
+							</select>							
+						</div>
+					</div>
+
+					<!-- release date -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="releaseDate">Release
+							Date</label>
+						<div class="col-md-8">
+							<input type="date" class="form-control" id="releaseDate"
+								name="releaseDate" th:value="${game.releaseDate}"
+								placeholder="Release Date" /> <span class="help-block">Release Date 
+								for the Game</span>
+						</div>
+					</div>
+
+ 
+ 					<!-- languages -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="language">Game Supported Languages</label>
+						<div class="col-md-8">
+							<th:block th:each="lang,i : ${T(com.adminportal.domain.enumeration.Language).values()}">
+								<input type="checkbox" th:value="${lang}" th:text="${lang}" 
+								th:field="*{game.languageList[__${i.index}__].name}"/>
+							</th:block>
+						</div>
+					</div>
+ 
+					<!-- PEGI Rating -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="pegi">*
+							PEGI</label>
+						<div class="col-md-8">
+							<select th:value="${game.pegiRating}" id="pegi" name="pegiRating"
+								class="form-control">
+								<option disabled="disabled">-- Please
+									select an option... --</option>
+								<option	th:each="pegi : ${T(com.adminportal.domain.enumeration.PEGI).values()}"
+									th:value="${pegi}" 
+									th:text="${pegi}" 
+									th:selected="${#strings.equalsIgnoreCase(pegi, game.pegiRating)}">
+    								</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- list price -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="listPrice">*List
+							Price</label>
+						<div class="col-md-8">
+							<div class="input-group">
+								<span class="input-group-addon">$</span> <input step="0.01"
+									th:value="${game.listPrice}" type="number" name="listPrice"
+									class="form-control" id="listPrice" placeholder="List Price" />
+							</div>
+							<span class="help-block">List price of the game</span>
+						</div>
+					</div>
+
+					<!-- our price -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="ourPrice">*Discounted 
+							Price</label>
+						<div class="col-md-8">
+							<div class="input-group">
+								<span class="input-group-addon">$</span> <input step="0.01"
+									th:value="${game.discountPrice}" type="number" name="discountPrice"
+									class="form-control" id="ourPrice" placeholder="Discount Price" />
+							</div>
+							<span class="help-block">Our discount price of the game</span>
+						</div>
+					</div>
+					
+					<!-- in stock number -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="inStockNumber">*Number
+							in stock</label>
+						<div class="col-md-8">
+							<input th:value="${game.inStockNumber}" type="number"
+								name="inStockNumber" class="form-control" id="inStockNumber"
+								placeholder="Number of in-stock copies" /> <span
+								class="help-block">Number of in-stock copies</span>
+						</div>
+					</div>
+
+					<!-- status of the game -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="status">Status</label>
+						<div class="col-md-8">
+							<label><input value="true" type="radio" name="active"
+								th:checked="${game.active}" /> Active </label> <label><input
+								value="false" type="radio" name="active" th:checked="${!game.active}"/>
+								Inactive </label> <span class="help-block">Whether the game is
+								active or inactive</span>
+						</div>
+					</div>
+
+					<!-- on sale -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="status">Is it on Sale?</label>
+						<div class="col-md-8">
+							<label><input value="false" type="radio" name="onSale"
+								th:checked="${!game.onSale}" />Not On Sale</label> <label><input
+								value="true" type="radio" name="onSale" th:checked="${game.onSale}" />
+								On Sale</label> <span class="help-block">Whether the game is
+								 on sale or not</span>
+						</div>
+					</div>			
+
+					<!-- description -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="description">Description</label>
+						<div class="col-md-8">
+							<textarea name="description" rows="5" class="form-control"								
+							id="description" th:value="${game.description}"
+							th:text="${game.description}"	placeholder="Description" ></textarea>
+							<span class="help-block">Description of the game</span>
+						</div>
+					</div>
+
+					<!-- upload image -->
+					<div class="form-group">
+						<div class="col-md-2">
+							<label for="gameImage">*Upload Game Image</label>
+						</div>
+						<div class="col-md-8">
+							<input id="gameImage" type="file" name="gameImage"
+								th:value="${game.gameImage}" />
+						</div>
+					</div>		
+					
+					<!-- GAME REQUIREMENTS -->			
+
+					<!-- size -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="size">*Required Size (GB)</label>
+
+						<div class="col-md-8">
+							<input type="number" name="size" class="form-control" step="0.01"
+								id="pageNumber" th:value="${game.size}"
+								placeholder="Size" /> <span class="help-block">Required Size</span>
+						</div>
+					</div>
+
+					<!-- Processor Type -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="processorType">Processor Type</label>
+						<div class="col-md-8">
+							<select th:value="${game.processorType}" id="processorType" name="processorType"
+								class="form-control">
+								<option value="true">x64</option>
+								<option value="false">x86</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- Processor Speed -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="processorSpeed">Processor Speed</label>
+
+						<div class="col-md-8">
+							<input type="number" name="processorSpeed" class="form-control" id="processorSpeed" step="0.1"
+								th:value="${game.processorSpeed}" placeholder="processorSpeed" /> <span
+								class="help-block">Processor Speed (GHz)</span>
+						</div>
+					</div>
+
+					<!-- Memory -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="memory">*System Memory (GB)</label>
+						<div class="col-md-8">
+							<div class="input-group">
+								<input th:value="${game.memory}" type="number" step="0.1"
+									name="memory" class="form-control" id="memory"
+									placeholder="System Memory (GB)" /> <span
+									class="input-group-addon">GB</span>
+							</div>
+							<span class="help-block">System Memory (GB)</span>
+						</div>
+					</div>
+
+					<!-- Graphics Memory -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="graphicsMemory">*Graphics Card Memory (GB)</label>
+						<div class="col-md-8">
+							<div class="input-group">
+								<input th:value="${game.graphicsMemory}" type="number" step="0.01"
+									name="graphicsMemory" class="form-control" id="graphicsMemory"
+									placeholder="Graphics Card Memory (GB)" /> <span
+									class="input-group-addon">GB</span>
+							</div>
+							<span class="help-block">Graphics Card Memory (GB)</span>
+						</div>
+					</div>
+
+					<!-- Windows Support -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="winOS">*
+							Windows :</label>
+						<div class="col-md-8">
+							<select th:value="${game.winOS}" id="winOS" name="winOS"
+								class="form-control">
+								<option th:selected="${#strings.equalsIgnoreCase(game.winOS, 'None')}">None</option>
+								<option th:selected="${#strings.equalsIgnoreCase(game.winOS, '7+')}">7+</option>
+								<option th:selected="${#strings.equalsIgnoreCase(game.winOS, '8+')}">8+</option>
+								<option th:selected="${#strings.equalsIgnoreCase(game.winOS, '10')}">10</option>
+							</select>
+						</div>
+					</div>
+					<!-- OSX Support -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="macOS">*
+							Mac OS X :</label>
+						<div class="col-md-8">
+							<select th:value="${game.macOS}" id="macOS" name="macOS"
+								class="form-control">
+								<option th:selected="${#strings.equalsIgnoreCase(game.macOS, 'None')}">None</option>
+								<option th:selected="${#strings.equalsIgnoreCase(game.macOS, '10.10+')}">10.10+</option>
+								<option th:selected="${#strings.equalsIgnoreCase(game.macOS, '10.11+')}">10.11+</option>
+								<option th:selected="${#strings.equalsIgnoreCase(game.macOS, '10.12+')}">10.12+</option>
+								<option th:selected="${#strings.equalsIgnoreCase(game.macOS, '10.13')}">10.13</option>
+							</select>
+						</div>
+					</div>
+					<!-- Linux Support -->
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="linOS">*
+							Linux :</label>
+						<div class="col-md-8">
+							<select th:value="${game.linOS}" id="linOS" name="linOS"
+								class="form-control">
+								<option th:selected="${#strings.equalsIgnoreCase(game.linOS, 'None')}">None</option>
+								<option th:selected="${#strings.equalsIgnoreCase(game.linOS, 'Ubuntu 14.04+')}">Ubuntu 14.04+</option>
+								<option th:selected="${#strings.equalsIgnoreCase(game.linOS, 'Ubuntu 16.04+')}">Ubuntu 16.04+</option>
+								<option th:selected="${#strings.equalsIgnoreCase(game.linOS, 'Ubuntu 18.04')}">Ubuntu 18.04</option>
+							</select>
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<div class="col-md-2"></div>
+						<div class="col-md-8">
+							<button type="submit" class="btn btn-success">Update Game</button>
+							<a class="btn btn-danger" th:href="@{/game/gameInfo(id=${game.id})}">Cancel</a>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+
+
+	<div th:replace="common/header :: body-bottom-scripts" />
+</body>
+</html>

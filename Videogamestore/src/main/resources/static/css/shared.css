@@ -1,0 +1,45 @@
+/* set document height to viewport height */
+html, body {
+	height: 100%;
+}
+/* set main body height to viewport minus footer height */
+main {
+	 /*margin-top: 50px; navbar initial height*/
+	padding-top: 50px;
+	min-height: calc(100% - 79px); /*this padding + footer padding - 1*/
+	background-image:linear-gradient(to right, #5C6F6E, #8e9eab, #5C6F6E);
+	/*background-color: #B2EAE6;*/
+}
+
+h2.section-title{
+	font-family: Georgia,Times,Times New Roman,serif; 
+	font-weight: bold;
+}
+/* footer properties' styles */
+.main-footer {
+    background: black;
+    color: whitesmoke;
+    padding: 30px;
+  }
+  
+  .main-footer__links {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+  }
+  
+  .main-footer__link {
+      display: inline-block;
+      margin: 0 17px;
+  }
+  
+  .main-footer__link a {
+      color: whitesmoke;
+      text-decoration: none;
+  }
+  
+  .main-footer__link a:hover,
+  .main-footer__link a:active {
+      color: gray;
+  }

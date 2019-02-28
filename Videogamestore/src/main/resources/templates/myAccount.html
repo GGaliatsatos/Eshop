@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="common/shared :: common-header" />
+<body>
+	<header th:replace="common/shared :: navbar "> </header>
+
+	<main style="padding-top: 75px;">
+	
+	<div class="container box">
+<!-- Navigation Tabs -->
+		<div class="row">
+			<div id="form-tabs"
+				class="col-xs-12 col-xs-offset-0 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+				<ul class="nav nav-pills nav-justified">
+					<li th:classappend="${classActiveLogin}? 'active'"><a href="#tab1" data-toggle="tab">Log in</a>
+					</li>
+					<li th:classappend="${classActiveNewAccount}? 'active'"><a href="#tab2" data-toggle="tab">Register</a>
+					</li>
+					<li th:classappend="${classActiveForgetPassword}? 'active'"><a href="#tab3" data-toggle="tab">Forgot Password?</a>
+					</li>
+				</ul>
+
+<!-- Tab panels -->
+				<div class="tab-content clearfix">
+				
+					<!-- Log in Tab panel form -->				
+					<div class="tab-pane" id="tab1" th:classappend="${classActiveLogin}? 'in active'">
+						<div th:if="${param.error != null}" style="color:red;">Incorrect username or password.</div>
+						<form th:action="@{/login}" method="post">
+							<div class="form-group">
+								<label for="username">Username</label> 
+								<input type="text" class="form-control" id="username" name="username"
+									aria-describedby="emailHelp" placeholder="Enter email" />
+							</div>
+							<div class="form-group">
+								<label for="password">Password</label> 
+								<input type="password" class="form-control" id="password" name="password"
+									placeholder="Password" />
+							</div>
+
+							<button type="submit" class="btn btn-primary btn-block">Log in</button>
+						</form>
+					</div>
+					
+					<!-- Register Tab panel form -->
+					<div class="tab-pane" id="tab2" th:classappend="${classActiveNewAccount}? 'in active'">
+					<div class="alert alert-info" th:if="${emailSent}">An
+										email has been sent to the email address you just registered.
+										Please validate your email address and update your password
+										information.</div>
+						<form th:action="@{/newUser}" method="post" th:object="${userForm}">
+							<div class="form-group">
+								<label for="newEmail">Email address</label> 
+								<input th:field="*{email}"
+									type="email" class="form-control" id="newEmail" name="email"
+									aria-describedby="emailHelp" placeholder="Enter email" /> 
+								<span style="color: red;" th:if="${emailExists}">Email
+												already exists. Choose a different one.</span>
+								<span style="color: red;" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+							</div>
+							
+							<div class="form-group">
+								<label for="newUsername">Username</label> 
+								<input th:field="*{username}"
+									type="text" class="form-control" id="newUsername" name="username"
+									aria-describedby="usernameHelp" placeholder="Enter username" /> 
+								<span style="color: red;" th:if="${usernameExists}">Username
+												already exists. Choose a different one.</span>
+								<span style="color: red;" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+							</div>
+							<div class="form-group">
+								<label for="newPassword">Password</label> 
+								<input name="password" th:field="*{password}"
+									type="password" class="form-control" id="newPassword"
+									placeholder="Password" />
+								<span style="color: red;" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+							</div>
+							<div class="form-group">
+								<label for="newFavoriteGenre">Favorite Genre</label> 
+								<select th:value="${favoriteGenre}" id="newFavoriteGenre" name="favoriteGenre"
+									class="form-control" th:field="*{favoriteGenre}">
+
+									<option
+									th:each="genre : ${T(com.videogamestore.domain.enumeration.Genre).values()}"
+									th:value="${genre}" 
+									th:text="${genre}"
+									th:selected="${#strings.equalsIgnoreCase(genre, favoriteGenre)}">
+    								</option>
+								</select>	
+								<span style="color: red;" th:if="${invalidGenre}">Please chose a 
+								valid Genre.</span>
+								<span style="color: red;" th:if="${#fields.hasErrors('favoriteGenre')}" th:errors="*{favoriteGenre}"></span>
+							</div>
+							<div class="form-group">
+								<label for="newFavoriteLanguage">Favorite Language</label> 
+								<select th:value="${favoriteLanguage}" id="newFavoriteLanguage" name="favoriteLanguage"
+									class="form-control" th:field="*{favoriteLanguage}">
+
+									<option
+									th:each="lang : ${T(com.videogamestore.domain.enumeration.Language).values()}"
+									th:value="${lang}" 
+									th:text="${lang}"
+									th:selected="${#strings.equalsIgnoreCase(lang, favoriteLanguage)}">
+    								</option>
+								</select>	
+								<span style="color: red;" th:if="${invalidLanguage}">Please chose a 
+								valid language.</span>
+								<span style="color: red;" th:if="${#fields.hasErrors('favoriteLanguage')}" th:errors="*{favoriteLanguage}"></span>
+							</div>
+
+							<button type="submit" class="btn btn-primary btn-block">Register</button>
+						</form>
+					</div>
+					
+					<!-- Forgot Password Tab panel form -->
+					<div class="tab-pane" id="tab3" th:classappend="${classActiveForgetPassword}? 'in active'">
+						<div class="alert alert-danger" th:if="${emailNotExist}"><span>Email doesn't exist.</span>
+						</div>
+						<div th:if="${forgetPasswordEmailSent}" class="alert alert-success">Email sent.</div>
+						<form th:action="@{/forgetPassword}" method="post" >
+							<div class="form-group">
+								<label for="recoverEmail">Email address</label> <input 
+									type="email" class="form-control" id="recoverEmail" name="email"
+									aria-describedby="emailHelp" placeholder="Enter email" /> 
+							</div>
+							<button type="submit" class="btn btn-primary btn-block">Get New Password</button>
+						</form>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- /container --> </main>
+
+	<footer th:replace="common/shared :: footer"></footer>
+
+
+	<div th:replace="common/shared :: bottom-scripts"></div>
+
+
+</body>
+
+</html>
